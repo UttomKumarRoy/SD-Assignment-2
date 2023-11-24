@@ -32,17 +32,15 @@ const displayVideo =(videos, id) =>{
     const videoContainer=document.getElementById('video-all');
     videoContainer.innerHTML = '';
 
-    const itemsContainer = document.getElementById('items-found');
     const items = videos.length;
     if (items === 0) {
         const Title = document.getElementById(`${id}`).innerText;
-        return itemsContainer.innerHTML = `
-        <div>
-        <h2 class='text-red-900'>Oops! No item found for category ${Title}</h2>
-        <div>
-             <img src='https://www.freeiconspng.com/thumbs/error-icon/error-icon-32.png' alt="error" />
+        return videoContainer.innerHTML = `
+        <div class='mt-5 d-flex flex-column justify-content-center'>
+        <div class='d-flex justify-content-center'>
+        <img src='./images/Icon.png' alt="error" />
         </div>
-        
+        <h2 class='d-flex justify-content-center'>Oops! No item found for category ${Title}</h2>
         </div>
         `;   
     }
@@ -52,14 +50,25 @@ const displayVideo =(videos, id) =>{
         const {profile_picture,profile_name,verified} = authors[0];
         const {views,posted_date}=others;
         const div=document.createElement('div');
+        div.classList.add('col-lg-3,col-sm-12');
+
+        div.setAttribute('style', 'border: 5px solid green;border-radius:10px;width:18rem; ');
         div.innerHTML=`
-        <div class="card" style="width: 18rem;">
-            <img src="${thumbnail}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+        <img width="100px" height="200px" src="${thumbnail}" class="card-img-top" alt="..."> <br> <br/>
+        <div class="row">
+        <div class="col-lg-4 col-sm-4">
+        <img style="border-radius:25px;" height="50px" width="50px" src="${profile_picture}" alt="Photo of author"/>
         </div>
+        <div class="col-lg-8 col-sm-8">
+        <p>'${title}'</p>
+        <p>'${profile_name}'</p>
+        <p>'${views}'</p>
+        </div>
+        </div>
+       
         `
         videoContainer.appendChild(div);
     })
 }
+
+allVideos(1000);
