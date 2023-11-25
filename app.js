@@ -41,7 +41,7 @@ const displayVideo =(videos, id) =>{
         <img src='./images/Icon.png' alt="error" />
         </div>
         <h2 class='d-flex justify-content-center'>Oops! No item found for category ${Title}</h2>
-        </div>
+        </div> 
         `;   
     }
 
@@ -51,18 +51,29 @@ const displayVideo =(videos, id) =>{
         const {views,posted_date}=others;
         const div=document.createElement('div');
         div.classList.add('col-lg-3,col-sm-12');
+        div.setAttribute('style', 'border: 5px solid green;border-radius:20px;width:18rem; ');
 
-        div.setAttribute('style', 'border: 5px solid green;border-radius:10px;width:18rem; ');
+        const tick=verified? '<img src="./images/tick.jpeg" width="30px" height="25px" alt="tick" />': "";
+
+        let minutes=parseInt(posted_date/60);
+        const hours=parseInt(minutes/60);
+        minutes=parseInt(minutes%60);
+        const time=posted_date?`<p>${hours} hours ${minutes} minutes ago</p>`:"";
+
         div.innerHTML=`
-        <img width="100px" height="200px" src="${thumbnail}" class="card-img-top" alt="..."> <br> <br/>
+        <div >
+        <img id="bgImage" width="100px" height="200px" src="${thumbnail}" class="card-img-top" alt="..."> <p id="pTime">${time}</p></img>
+        <br> <br/>
+        </div>
         <div class="row">
         <div class="col-lg-4 col-sm-4">
         <img style="border-radius:25px;" height="50px" width="50px" src="${profile_picture}" alt="Photo of author"/>
         </div>
         <div class="col-lg-8 col-sm-8">
-        <p>'${title}'</p>
-        <p>'${profile_name}'</p>
-        <p>'${views}'</p>
+        <p>${title}</p>
+        <p>${profile_name}  ${tick}</p> 
+        <p>${views}</p>
+        ${time}
         </div>
         </div>
        
