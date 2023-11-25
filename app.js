@@ -3,32 +3,28 @@ fetch('https://openapi.programming-hero.com/api/videos/categories')
 .then(data => displayMenu(data.data))
 .catch(err => console.log(err));
 
+let idx=1000;
 
-const menuContainer=document.getElementById('menu-all');
-
-const displayMenu = (Menus) => {
-    Menus.forEach(menu => {
-        const a=document.createElement('a');
-        a.innerText = `${menu.category}`;
-        a.classList.add('col');
-        a.setAttribute('id', `${menu.category_id}`);
-        a.setAttribute('href', '#');
-        menuContainer.appendChild(a);
-        document.getElementById(menu.category_id).addEventListener('click', () => {
-            allVideos(menu.category_id);
-        })
-    })
-}
-
-const allVideos = (id) => {
+document.getElementById('Sort').addEventListener('click', () => {
+    const id=String(idx);
     const url = `https://openapi.programming-hero.com/api/videos/category/${id}`
     fetch(url)
         .then(res => res.json())
-        .then(data => displayVideo(data.data, id))
-        .catch(err => console.log(err))
+        .then(data => displaySortedVideos(data.data,id))
+        .catch(err => console.log(err));
+})
+
+const displaySortedVideos=(videos,id) =>{
+    const compareByViews = (a, b) => {
+        const viewsA = parseFloat(a.others.views);
+        const viewsB = parseFloat(b.others.views);
+        return viewsB - viewsA;
+    };
+    videos.sort(compareByViews);
+    addFunc(videos, id);
 }
 
-const displayVideo =(videos, id) =>{
+const addFunc = (videos,id) =>{
     const videoContainer=document.getElementById('video-all');
     videoContainer.innerHTML = '';
 
@@ -73,13 +69,40 @@ const displayVideo =(videos, id) =>{
         <p>${title}</p>
         <p>${profile_name}  ${tick}</p> 
         <p>${views}</p>
-        ${time}
         </div>
         </div>
-       
         `
         videoContainer.appendChild(div);
     })
+}
+
+const menuContainer=document.getElementById('menu-all');
+
+const displayMenu = (Menus) => {
+    Menus.forEach(menu => {
+        const a=document.createElement('a');
+        a.innerText = `${menu.category}`;
+        a.classList.add('col');
+        a.setAttribute('id', `${menu.category_id}`);
+        a.setAttribute('href', '#');
+        menuContainer.appendChild(a);
+        document.getElementById(menu.category_id).addEventListener('click', () => {
+            idx=menu.category_id;
+            allVideos(menu.category_id);
+        })
+    })
+}
+
+const allVideos = (id) => {
+    const url = `https://openapi.programming-hero.com/api/videos/category/${id}`
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayVideo(data.data, id))
+        .catch(err => console.log(err))
+}
+
+const displayVideo =(videos,id) =>{
+   addFunc(videos,id);
 }
 
 allVideos(1000);
